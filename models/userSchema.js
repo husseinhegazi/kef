@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   },
   password: { type: String, required: true },
   orders: [{ type: Number, ref: "orders", required: true, default: [] }],
-  role: "user",
+  role: { type: String, default: "user" },
 });
 // auto increment id plugin
 userSchema.plugin(AutoIncrement, { id: "userCounter" });

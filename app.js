@@ -44,5 +44,5 @@ server.use((req, res) => {
 //error middleWare
 server.use((error, req, res, next) => {
   let status = error.status || 500;
-  res.status(status).json({ message: "internal error" + error });
+  res.status(status).json({ message: "internal error " + error });
 });
