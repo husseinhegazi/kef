@@ -4,10 +4,12 @@ const adminSchema = new mongoose.Schema({
   FirstName: {
     type: String,
     required: true,
+    trim: true,
   },
   lastName: {
     type: String,
     required: true,
+    trim: true,
   },
   email: {
     type: string,
@@ -18,6 +20,7 @@ const adminSchema = new mongoose.Schema({
     minlength: 10,
     maxlength: 40,
     lowercase: true,
+    trim: true,
   },
   password: {
     type: string,
@@ -29,6 +32,7 @@ const adminSchema = new mongoose.Schema({
     unique: true,
     required: true,
     length: 10,
+    trim: true,
   },
   wallet: {
     type: Number,
@@ -42,6 +46,7 @@ const adminSchema = new mongoose.Schema({
     length: 14,
     unique: true,
     required: true,
+    trim: true,
   },
 });
 module.exports = mongoose.model("admin", adminSchema);
