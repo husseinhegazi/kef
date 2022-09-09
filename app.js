@@ -5,6 +5,10 @@ const morgan = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 const path = require("path");
+
+const userRoute=require("./routes/userRoute");
+const adminRoute=require("./routes/adminRoute");
+
 // DB connect
 mongoose
   .connect(process.env.DB_URL)
@@ -31,6 +35,8 @@ server.use(cors({}));
 
 //endpoints Routes
 server.use([express.json(), express.urlencoded({ extended: false })]);
+
+server.use([userRoute,adminRoute])
 // not found middleWare
 server.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
