@@ -13,12 +13,15 @@ const adminSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
+    trim: true,
   },
   email: {
-    type: string,
+    type: String,
     match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
     // default: "adminKeef@keef.com",
-    set: "adminKeef@keef.com",
+    set: () => {
+      "adminKeef@keef.com";
+    },
     unique: true,
     required: true,
     maxlength: 40,
@@ -26,9 +29,11 @@ const adminSchema = new mongoose.Schema({
     trim: true,
   },
   password: {
-    type: string,
+    type: String,
     // default: "Admin@123",
-    set: "Admin@123",
+    set: () => {
+      "Admin@123";
+    },
     required: true,
   },
   phoneNumber: {
@@ -42,7 +47,7 @@ const adminSchema = new mongoose.Schema({
     type: Number,
   },
   role: {
-    type: string,
+    type: String,
     default: "admin",
   },
   nationalId: {
