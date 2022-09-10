@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 require("../models/adminSchema");
-const admin = mongoose.model("admin");
+const Admin = mongoose.model("admin");
 const bcrypt = require("bcrypt");
 
 module.exports.getAdmin = (req, res, next) => {
-  admin
-    .find({})
+  Admin.find({})
     .then((data) => {
       res.status(200).json(data);
     })
@@ -15,13 +14,12 @@ module.exports.getAdmin = (req, res, next) => {
 };
 module.exports.addAdmin = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hashpass) => {
-    let adminObj = new admin({
+    let adminObj = new Admin({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
       password: hashpass,
       phoneNumber: req.body.phoneNumber,
-      wallet: req.body.wallet,
       nationalId: req.body.nationalId,
     });
     adminObj
@@ -34,4 +32,17 @@ module.exports.addAdmin = (req, res, next) => {
         next(error);
       });
   });
+};
+module.exports.updateAdminById = (req, res, next) => {
+  Admin.findOne({ _id: req.params.id })
+    .then((data) => {
+      let bodyData = req.body;
+      for (let key in bodyData) {
+        data[key] = bodyData[key];
+      }
+      return data.save().then(res.status(200).json({ data: "updated" }));
+    })
+    .catch((error) => {
+      next(error);
+    });
 };

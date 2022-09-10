@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const adminSchema = new mongoose.Schema({
+  _id: { type: Number },
   firstName: {
     type: String,
     required: true,
@@ -19,9 +21,9 @@ const adminSchema = new mongoose.Schema({
     type: String,
     match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
     // default: "adminKeef@keef.com",
-    set: () => {
-      "adminKeef@keef.com";
-    },
+    // set: () => {
+    //   "adminKeef@keef.com";
+    // },
     unique: true,
     required: true,
     maxlength: 40,
@@ -31,9 +33,9 @@ const adminSchema = new mongoose.Schema({
   password: {
     type: String,
     // default: "Admin@123",
-    set: () => {
-      "Admin@123";
-    },
+    // set: () => {
+    //   "Admin@123";
+    // },
     required: true,
   },
   phoneNumber: {
@@ -58,4 +60,6 @@ const adminSchema = new mongoose.Schema({
     trim: true,
   },
 });
+adminSchema.plugin(AutoIncrement, { id: "adminCounter" });
+
 module.exports = mongoose.model("admin", adminSchema);

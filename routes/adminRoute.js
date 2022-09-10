@@ -9,4 +9,5 @@ router
   }, adminController.getAdmin)
   .post(adminController.addAdmin);
 
+router.route("/admin/:id").put(adminController.updateAdminById);
 module.exports = router;
