@@ -20,10 +20,6 @@ const adminSchema = new mongoose.Schema({
   email: {
     type: String,
     match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-    // default: "adminKeef@keef.com",
-    // set: () => {
-    //   "adminKeef@keef.com";
-    // },
     unique: true,
     required: true,
     maxlength: 40,
@@ -32,15 +28,10 @@ const adminSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    // default: "Admin@123",
-    // set: () => {
-    //   "Admin@123";
-    // },
     required: true,
   },
   phoneNumber: {
     type: Number,
-    unique: true,
     required: true,
     length: 10,
     trim: true,
@@ -51,13 +42,6 @@ const adminSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "admin",
-  },
-  nationalId: {
-    type: Number,
-    length: 14,
-    unique: true,
-    required: true,
-    trim: true,
   },
 });
 adminSchema.plugin(AutoIncrement, { id: "adminCounter" });
