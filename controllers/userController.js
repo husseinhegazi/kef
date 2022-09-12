@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 require("../models/userSchema");
 const User = mongoose.model("users");
 const bcrypt = require("bcrypt");
+
 // confirm password for user
 module.exports.confirmPassword=(req, res, next) => {
     if (req.body.password !== req.body.confirmPassword) {
