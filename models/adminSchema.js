@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
-
 const adminSchema = new mongoose.Schema({
   _id: { type: Number },
   firstName: {

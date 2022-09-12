@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const mwError = require("../MW/validationMW");
 const adminController = require("../controllers/adminController");
-const { addAdminValidation } = require("../validations/adminValidation");
+const {
+  addAdminValidation,
+  updateAdminValidation,
+} = require("../validations/adminValidation");
 router
   .route("/admin")
   .get(adminController.getAdmin)
@@ -13,5 +16,12 @@ router
     adminController.addAdmin
   );
 
-router.route("/admin/:id").put(adminController.updateAdminById);
+router
+  .route("/admin/:id")
+  .put(
+    updateAdminValidation,
+    mwError,
+    adminController.confirmPassword,
+    adminController.updateAdminById
+  );
 module.exports = router;
