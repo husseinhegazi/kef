@@ -8,6 +8,7 @@ const path = require("path");
 
 const userRoute=require("./routes/userRoute");
 const adminRoute=require("./routes/adminRoute");
+const loginRoute=require("./routes/loginRoute");
 
 // DB connect
 mongoose
@@ -36,7 +37,7 @@ server.use(cors({}));
 //endpoints Routes
 server.use([express.json(), express.urlencoded({ extended: false })]);
 
-server.use([userRoute,adminRoute])
+server.use([userRoute,adminRoute,loginRoute])
 // not found middleWare
 server.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
