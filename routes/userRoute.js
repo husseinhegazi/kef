@@ -12,6 +12,19 @@ router
     errorMW,
     userController.createNewUser
   );
-router.route("/users").get(userController.getAllUsers);
+router.route("/users").get(authMW,(req, res, next) => {
+
+
+    if (
+      req.role == "user" 
+    ) {
+      // console.log("kitchen id", req.id);
+      next();
+    } else {
+      let error = new Error("not authorized");
+      error.status = 403;
+      next(error);
+    }
+  },userController.getAllUsers);
 router.route("/user/:id").get(userController.getUserById);
 module.exports = router;

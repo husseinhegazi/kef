@@ -28,13 +28,13 @@ module.exports.login = (req, res, next) => {
           );
           // console.log(data._id)
           res
-            .cookie( token, {
+            .cookie("access_token", token, {
               httpOnly: true,
-              secure: process.env.NODE_ENV === "production",
+              secure: process.env.NODE_ENV,
             })
             .status(200)
             .json({ data, token });
-          console.log("login", cookie().builderOrContext.fields)
+          // console.log("login", cookie().builderOrContext.fields)
         }
       });
     })
