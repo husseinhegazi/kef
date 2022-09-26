@@ -2,6 +2,7 @@ const User = require("../models/userSchema");
 const Admin = require("../models/adminSchema");
 const jwt = require("jsonwebtoken");
 const bycrypt = require("bcrypt");
+const { cookie } = require("express-validator");
 const adminUserName = "admin";
 const adminPassword = "admin";
 module.exports.login = (req, res, next) => {
@@ -10,24 +11,30 @@ module.exports.login = (req, res, next) => {
   })
 
     .then((data) => {
-    //   console.log("data is ==========>", data);
+      //   console.log("data is ==========>", data);
 
       bycrypt.compare(req.body.password, data.password).then((isEqual) => {
         if (!isEqual) {
           res.status(401).json({ data: "invalid email or password" });
         } else {
-            // console.log("role",data.role)
+          // console.log("role",data.role)
           let token = jwt.sign(
             {
               id: data._id,
-              role:data.role
+              role: data.role,
             },
             process.env.secret,
             { expiresIn: "1d" }
           );
           // console.log(data._id)
-          res.status(200).json({ token, data});
-          // console.log("login", res)
+          res
+            .cookie( token, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+            })
+            .status(200)
+            .json({ data, token });
+          console.log("login", cookie().builderOrContext.fields)
         }
       });
     })
