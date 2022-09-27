@@ -12,12 +12,10 @@ router
     errorMW,
     userController.createNewUser
   );
-router.route("/users").get(authMW,(req, res, next) => {
-
-
-    if (
-      req.role == "admin" 
-    ) {
+router.route("/users").get(
+  authMW,
+  (req, res, next) => {
+    if (req.role == "admin") {
       // console.log("kitchen id", req.id);
       next();
     } else {
@@ -25,6 +23,16 @@ router.route("/users").get(authMW,(req, res, next) => {
       error.status = 403;
       next(error);
     }
-  },userController.getAllUsers);
+  },
+  userController.getAllUsers
+);
 router.route("/user/:id").get(userController.getUserById);
+
+router
+  .route("/user/change-password/:id")
+  .put(
+    userController.confirmPassword,
+    errorMW,
+    userController.userChangePassword
+  );  
 module.exports = router;

@@ -31,10 +31,13 @@ router
 
 router
   .route("/admin/:id")
+  .put(updateAdminValidation, mwError, adminController.updateAdminById);
+
+router
+  .route("/admin/change-password/:id")
   .put(
-    updateAdminValidation,
-    mwError,
     adminController.confirmPassword,
-    adminController.updateAdminById
+    mwError,
+    adminController.adminChangePassword
   );
 module.exports = router;

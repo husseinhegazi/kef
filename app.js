@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const userRoute=require("./routes/userRoute");
 const adminRoute=require("./routes/adminRoute");
 const loginRoute=require("./routes/loginRoute");
+const resetPassword=require("./routes/resetPassword")
 // DB connect
 mongoose
   .connect(process.env.DB_URL)
@@ -37,7 +38,7 @@ server.use(cookieParser());
 //endpoints Routes
 server.use([express.json(), express.urlencoded({ extended: false })]);
 
-server.use([userRoute,adminRoute,loginRoute])
+server.use([userRoute,adminRoute,loginRoute,resetPassword])
 // not found middleWare
 server.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
