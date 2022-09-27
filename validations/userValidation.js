@@ -11,7 +11,7 @@ exports.addUserValidation = [
     .withMessage(" user first name must be string")
     .isLength({ max: 30, min: 2 })
     .withMessage(
-      "user first name must be less than 50 characters long and min 2"
+      "user first name must be less than 30 characters long and min 2"
     ),
   body("lastName")
     .notEmpty()
@@ -20,7 +20,7 @@ exports.addUserValidation = [
     .withMessage(" user last name must be string")
     .isLength({ max: 30, min: 2 })
     .withMessage(
-      "user last name must be less than 50 characters long and min 2"
+      "user last name must be less than 30 characters long and min 2"
     ),
   body("email")
     .notEmpty()
