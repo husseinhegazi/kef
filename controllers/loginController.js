@@ -38,7 +38,7 @@ module.exports.login = (req, res, next) => {
           }
         });
       } else {
-        Admin.findOne({ email: req.body.email })
+        Admin.findOne({})
           .then((data) => {
             if (data) {
               console.log("data admin",data)
@@ -76,7 +76,7 @@ module.exports.login = (req, res, next) => {
               ) {
                 let token = jwt.sign(
                   {
-                    role: "admin",
+                    role: "first",
                   },
                   process.env.secret,
                   { expiresIn: "1h" }
