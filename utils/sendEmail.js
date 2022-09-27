@@ -9,7 +9,7 @@ const sendEmail = async (email, subject, text) => {
             secure: true,
             auth: {
                 user: "araafun@gmail.com",
-                pass: "123456@hH",
+                pass: "",
             },
         });
         // console.log("success",transporter)
