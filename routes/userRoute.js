@@ -16,7 +16,7 @@ router.route("/users").get(authMW,(req, res, next) => {
 
 
     if (
-      req.role == "user" 
+      req.role == "admin" 
     ) {
       // console.log("kitchen id", req.id);
       next();
