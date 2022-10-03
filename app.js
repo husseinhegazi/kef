@@ -12,6 +12,7 @@ const loginRoute = require("./routes/loginRoute");
 const resetPassword = require("./routes/resetPassword");
 const product = require("./routes/productRoute");
 const productInfo = require("./routes/productInfoRoutes");
+
 // DB connect
 mongoose
   .connect(process.env.DB_URL)
@@ -36,22 +37,23 @@ server.use(
 const multer = require("multer");
 const upload = multer({
   limits: {
-    fileSize: 1000000000000,
+    fileSize: 1000000000,
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
       return cb(new Error("Please upload an image of type jpg, jpeg or png"));
+    } else if (req.files.length > 7) {
+      return cb(new Error("maximum 7 photos can be uplouded"));
+    } else {
+      cb(undefined, true);
     }
-    cb(undefined, true);
   },
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
       callback(null, "./products");
     },
     filename: function (req, file, callback) {
-      const newImageName = `${Date.now()}+${path.extname(
-        file.originalname
-      )}`;
+      const newImageName = `${Date.now()}-${file.originalname}`;
       callback(null, newImageName);
     },
   }),
