@@ -64,5 +64,34 @@ module.exports.addProductInfo = (req, res, next) => {
 
 //update product info by id
 module.exports.updateProductInfoById = (req, res, next) => {
-
+  if (req.files) {
+    ProductInfo.findOne({ _id: req.params.id })
+      .then((productInfo) => {
+        if (productInfo) {
+          for (i = 0; i < req.files.length; i++) {
+            productInfo.images.push(
+              `http://localhost:8081/products/${req.files[i].filename}`
+            );
+          }
+          return productInfo.save().then(res.status(200).json({ productInfo }));
+        } else {
+          throw new Error("product info not found");
+        }
+      })
+      .catch((error) => {
+        next(error);
+      });
+  } else {
+    ProductInfo.updateOne({ _id: req.params.id }, { $set: req.body })
+      .then((productInfo) => {
+        if (productInfo.modifiedCount === 0)
+          next(new Error("product info dosent change or not found"));
+        else res.status(200).json({ productInfo });
+      })
+      .catch((error) => {
+        next(error);
+      });
+  }
 };
+
+

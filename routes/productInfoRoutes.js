@@ -9,11 +9,10 @@ const { addProductInfoValidation } = require("../validations/productInfoValidati
 router.route("/product-info")
 .get(productInfoController.getAllProductInfo)
 .post(productInfoController.addProductInfo)
-.put()
 .delete()
 
 router.route("/product-info/:id")
 .get(productInfoController.getProductInfoById)
-.put()
+.put(productInfoController.updateProductInfoById)
 .delete()
 module.exports = router;

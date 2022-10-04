@@ -5,8 +5,12 @@ const authMW = require("../MW/authMW");
 const productController=require("../controllers/productController")
 
 router.route("/product")
-.get()
+.get(productController.getAllProducts)
 .post(productController.addNewProduct)
-
+.delete()
+router.route("/product/:id")
+.get(productController.getProductById)
+.put()
+.delete()
 
 module.exports = router;
