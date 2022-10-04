@@ -4,16 +4,15 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 const productSchema = mongoose.Schema({
   _id: { type: Number },
   name: {
-      type: String,
-      required: true,
-      maxlength: 40,
-      unique: true,
-      trim: true,
-    },
-    productInfoId: [{ type: Number, ref: "productInfos", required: true ,default:[]}],
-    category: {
     type: String,
     required: true,
+    maxlength: 40,
+    unique: true,
+    trim: true,
+  },
+  productInfoId: [{ type: Number, ref: "productInfos", default: [] }],
+  category: {
+    type: String,
     default: "Other",
     enum: [
       "Hoodies",
@@ -27,7 +26,6 @@ const productSchema = mongoose.Schema({
   },
   gender: {
     type: String,
-    required: true,
     enum: ["women", "unisex"],
     default: "unisex",
   },
