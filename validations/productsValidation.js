@@ -64,14 +64,15 @@ exports.addProductsValidation = [
 
 exports.updateProductsValidation = [
   body("name")
+    .optional()
     .isString()
     .withMessage(" product name must be string")
     .isLength({ max: 30, min: 2 })
     .withMessage("product name must be less than 30 characters long and min 2"),
   body("productInfoId")
     .optional()
-    .isArray(Number)
-    .withMessage("product info id must be array of numbers"),
+    .isNumeric()
+    .withMessage("product info id must one number"),
   body("category")
     .optional()
     .isIn([
@@ -103,6 +104,7 @@ exports.updateProductsValidation = [
     .isLength({ max: 5, min: 2 })
     .withMessage("sale price must be less than 5 numbers long and min 2"),
   body("price")
+    .optional()
     .isNumeric()
     .withMessage("price must be number")
     .isLength({ max: 5, min: 2 })
