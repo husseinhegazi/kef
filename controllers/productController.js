@@ -3,6 +3,13 @@ const Product = require("../models/productsSchema");
 //get all products
 module.exports.getAllProducts = (req, res, next) => {
   Product.find({})
+    .populate({
+      path: "productInfoId",
+      select: {
+        _id: 0,
+        images: 1,
+      },
+    })
     .then((product) => {
       res.status(200).json(product);
     })
@@ -14,6 +21,17 @@ module.exports.getAllProducts = (req, res, next) => {
 //get product by id
 module.exports.getProductById = (req, res, next) => {
   Product.findOne({ _id: req.params.id })
+    .populate({
+      path: "productInfoId",
+      select: {
+        _id: 0,
+        colors: 1,
+        images: 1,
+        medium: 1,
+        large: 1,
+        xlarge: 1,
+      },
+    })
     .then((product) => {
       if (product) {
         res.status(200).json(product);
