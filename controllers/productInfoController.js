@@ -29,35 +29,42 @@ module.exports.getProductInfoById = (req, res, next) => {
 
 // add product info
 module.exports.addProductInfo = (req, res, next) => {
-  Product.findOne({ _id: req.body.productId })
-    .then((product) => {
-      if (product) {
-        let path = [];
-        if (req.files) {
-          for (i = 0; i < req.files.length; i++) {
-            path.push(
-              `http://localhost:8081/products/${req.files[i].filename}`
-            );
+  let path = [];
+  if (req.files) {
+    for (i = 0; i < req.files.length; i++) {
+      path.push(`http://localhost:8081/products/${req.files[i].filename}`);
+    }
+  } else {
+    path = ["https://www.w3schools.com/howto/img_avatar.png"];
+  }
+  let ProductInfoObject = new ProductInfo({
+    productId: req.body.productId,
+    colors: req.body.colors,
+    images: path,
+    medium: req.body.medium,
+    large: req.body.large,
+    xlarge: req.body.xlarge,
+  });
+  ProductInfoObject.save()
+    .then((productInfo) => {
+      Product.findOne({ _id: productInfo.productId })
+        .then((product) => {
+          if (product) {
+            if (!product.productInfoId.includes(productInfo._id)) {
+              product.productInfoId.push(productInfo._id);
+              return product
+                .save()
+                .then(res.status(200).json({ product, productInfo }));
+            } else {
+              next(new Error("product info id is already added"));
+            }
+          } else {
+            next(new Error("product id is not found"));
           }
-        } else {
-          path = ["https://www.w3schools.com/howto/img_avatar.png"];
-        }
-        let ProductInfoObject = new ProductInfo({
-          productId: req.body.productId,
-          colors: req.body.colors,
-          images: path,
-          medium: req.body.medium,
-          large: req.body.large,
-          xlarge: req.body.xlarge,
+        })
+        .catch((error) => {
+          next(error);
         });
-        ProductInfoObject.save()
-          .then((productInfo) => {
-            res.status(201).json({ productInfo });
-          })
-          .catch((error) => next(error));
-      } else {
-        throw new Error("product not found");
-      }
     })
     .catch((error) => next(error));
 };
@@ -84,7 +91,8 @@ module.exports.updateProductInfoById = (req, res, next) => {
   } else {
     ProductInfo.updateOne({ _id: req.params.id }, { $set: req.body })
       .then((productInfo) => {
-        if (productInfo.modifiedCount === 0)
+        if (req.body.productId) next(new Error("product id can't be updated"));
+        else if (productInfo.modifiedCount === 0)
           next(new Error("product info dosent change or not found"));
         else res.status(200).json({ productInfo });
       })
@@ -93,5 +101,3 @@ module.exports.updateProductInfoById = (req, res, next) => {
       });
   }
 };
-
-

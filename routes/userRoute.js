@@ -26,7 +26,10 @@ router.route("/users").get(
   },
   userController.getAllUsers
 );
-router.route("/user/:id").get(userController.getUserById);
+router
+  .route("/user/:id")
+  .get(userController.getUserById)
+  .put(userController.updateUserById);
 
 router
   .route("/user/change-password/:id")
@@ -34,5 +37,5 @@ router
     userController.confirmPassword,
     errorMW,
     userController.userChangePassword
-  );  
+  );
 module.exports = router;

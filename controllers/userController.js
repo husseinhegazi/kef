@@ -3,7 +3,6 @@ require("../models/userSchema");
 const User = mongoose.model("users");
 const bcrypt = require("bcrypt");
 
-
 // confirm password for user
 (module.exports.confirmPassword = (req, res, next) => {
   if (
@@ -81,5 +80,23 @@ module.exports.userChangePassword = (req, res, next) => {
   });
 };
 
-
+//update user
+module.exports.updateUserById = (req, res, next) => {
+  User.updateOne(
+    { _id: req.params.id },
+    {
+      $set: req.body,
+    }
+  )
+    .then((data) => {
+      if (data.modifiedCount == 0)
+        next(new Error("nothing to update in user or user not found"));
+      else if (req.body.password) {
+        next(new Error("invalid key for update"));
+      } else res.status(200).json({ data });
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
 

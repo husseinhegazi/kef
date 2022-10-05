@@ -60,21 +60,10 @@ module.exports.updateProductById = (req, res, next) => {
   )
     .then((product) => {
       if (req.body.productInfoId) {
-        Product.findOne({ _id: req.params.id })
-          .then((data) => {
-            if (!data.productInfoId.includes(req.body.productInfoId)) {
-              data.productInfoId.push(req.body.productInfoId);
-              return data.save().then(res.status(200).json({ data }));
-            } else {
-              next(new Error("product info id is already added"));
-            }
-          })
-          .catch((error) => {
-            next(error);
-          });
+        next(new Error("product info id can't be updated"));
       } else if (product.modifiedCount === 0)
         next(new Error("product dosent change or not found"));
-      else res.status(200).json({ product, data });
+      else res.status(200).json({ product });
     })
     .catch((error) => {
       next(error);
