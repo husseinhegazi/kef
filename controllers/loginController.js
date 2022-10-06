@@ -27,6 +27,7 @@ module.exports.login = (req, res, next) => {
               { expiresIn: "1d" }
             );
             // console.log(data._id)
+            console.log("login",res.cookie().req)
             res
               .cookie("access_token", token, {
                 httpOnly: true,
@@ -34,9 +35,9 @@ module.exports.login = (req, res, next) => {
               })
               .status(200)
               .json({ data, token });
-            // console.log("login", cookie("access_token",token))
           }
-        });
+        })
+        .catch((error)=>{next(error)});
       } else {
         Admin.findOne({})
           .then((data) => {
