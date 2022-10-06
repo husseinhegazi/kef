@@ -15,7 +15,7 @@ router
 router.route("/users").get(
   authMW,
   (req, res, next) => {
-    if (req.role == "admin") {
+    if (req.role === "admin") {
       // console.log("kitchen id", req.id);
       next();
     } else {
@@ -29,7 +29,8 @@ router.route("/users").get(
 router
   .route("/user/:id")
   .get(userController.getUserById)
-  .put(userController.updateUserById);
+  .put(userController.updateUserById)
+  .delete(userController.deleteUserById);
 
 router
   .route("/user/change-password/:id")

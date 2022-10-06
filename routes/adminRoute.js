@@ -31,7 +31,8 @@ router
 
 router
   .route("/admin/:id")
-  .put(updateAdminValidation, mwError, adminController.updateAdminById);
+  .put(updateAdminValidation, mwError, adminController.updateAdminById)
+  .delete(adminController.deleteAdminById);
 
 router
   .route("/admin/change-password/:id")

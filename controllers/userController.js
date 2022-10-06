@@ -62,25 +62,29 @@ module.exports.createNewUser = (req, res, next) => {
 };
 // change password
 module.exports.userChangePassword = (req, res, next) => {
-  User.findOne({ _id: req.params.id }).then((data) => {
-    if (data) {
-      bcrypt.compare(req.body.oldPassword, data.password).then((isEqual) => {
-        if (!isEqual) {
-          res.status(401).json({ data: "wrong password" });
-        } else {
-          bcrypt.hash(req.body.newPassword, 10).then((hashpass) => {
-            data.password = hashpass;
-            return data.save().then(res.status(200).json({ data }));
-          });
-        }
-      });
-    } else {
-      res.status(401).json({ data: "user not found" });
-    }
-  });
+  User.findOne({ _id: req.params.id })
+    .then((data) => {
+      if (data) {
+        bcrypt.compare(req.body.oldPassword, data.password).then((isEqual) => {
+          if (!isEqual) {
+            res.status(401).json({ data: "wrong password" });
+          } else {
+            bcrypt.hash(req.body.newPassword, 10).then((hashpass) => {
+              data.password = hashpass;
+              return data.save().then(res.status(200).json({ data }));
+            });
+          }
+        });
+      } else {
+        res.status(401).json({ data: "user not found" });
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
 };
 
-//update user
+//update user by ID
 module.exports.updateUserById = (req, res, next) => {
   User.updateOne(
     { _id: req.params.id },
@@ -100,3 +104,14 @@ module.exports.updateUserById = (req, res, next) => {
     });
 };
 
+//delete user account by ID
+module.exports.deleteUserById = (req, res, next) => {
+  User.deleteOne({ _id: req.params.id })
+    .then((data) => {
+      if (data.deletedCount === 0) next(new Error("user not found"));
+      else res.status(200).json({ data: "deleted" });
+    })
+    .catch((error) => {
+      next(error);
+    });
+};

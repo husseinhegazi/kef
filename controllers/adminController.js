@@ -84,3 +84,11 @@ module.exports.adminChangePassword = (req, res, next) => {
     }
   });
 };
+
+//delete admin account by ID
+module.exports.deleteAdminById=(req,res,next)=>{
+  Admin.deleteOne({_id:req.params.id}).then((data)=>{
+    if (data.deletedCount === 0) next(new Error("admin not found"));
+    else res.status(200).json({ data: "deleted" });
+  }).catch((error)=>{next(error)})
+}
