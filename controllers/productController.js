@@ -24,7 +24,6 @@ module.exports.getProductById = (req, res, next) => {
     .populate({
       path: "productInfoId",
       select: {
-        _id: 0,
         colors: 1,
         images: 1,
         medium: 1,
