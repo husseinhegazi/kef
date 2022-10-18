@@ -17,6 +17,6 @@ router
   .route("/product/:id")
   .get(productController.getProductById)
   .put(updateProductsValidation, mwError, productController.updateProductById)
-  .delete();
+  .delete(productController.deleteProductById);
 
 module.exports = router;

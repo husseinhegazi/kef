@@ -60,6 +60,10 @@ exports.addProductsValidation = [
     .withMessage("price must be number")
     .isLength({ max: 5, min: 2 })
     .withMessage("price must be less than 5 numbers long and min 2"),
+  body("newCollection")
+    .optional()
+    .isBoolean()
+    .withMessage("new collection must be true or false only"),
 ];
 
 exports.updateProductsValidation = [
@@ -109,4 +113,8 @@ exports.updateProductsValidation = [
     .withMessage("price must be number")
     .isLength({ max: 5, min: 2 })
     .withMessage("price must be less than 5 numbers long and min 2"),
+  body("newCollection")
+    .optional()
+    .isBoolean()
+    .withMessage("new collection must be true or false only"),
 ];

@@ -29,6 +29,7 @@ const productSchema = mongoose.Schema({
     enum: ["women", "unisex"],
     default: "unisex",
   },
+  newCollection: { type: Boolean, default: false },
   sale: { type: Boolean, default: false },
   salePrice: { type: Number, default: 0 },
   price: { type: Number, required: true },

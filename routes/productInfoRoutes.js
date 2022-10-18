@@ -14,5 +14,7 @@ router.route("/product-info")
 router.route("/product-info/:id")
 .get(productInfoController.getProductInfoById)
 .put(productInfoController.updateProductInfoById)
-.delete()
+.delete(productInfoController.deleteProductInfoById)
+router .route("/product-info-image/:id")
+.delete(productInfoController.deleteImage)
 module.exports = router;

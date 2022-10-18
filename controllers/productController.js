@@ -52,6 +52,7 @@ module.exports.addNewProduct = (req, res, next) => {
     sale: req.body.sale,
     salePrice: req.body.salePrice,
     price: req.body.price,
+    newCollection: req.body.newCollection,
   });
   ProductObj.save()
     .then((product) => {
@@ -73,6 +74,7 @@ module.exports.updateProductById = (req, res, next) => {
       sale: req.body.sale,
       salePrice: req.body.salePrice,
       price: req.body.price,
+      newCollection: req.body.newCollection,
     }
   )
     .then((product) => {
@@ -86,3 +88,16 @@ module.exports.updateProductById = (req, res, next) => {
       next(error);
     });
 };
+
+//delete product
+module.exports.deleteProductById=(req, res, next)=>{
+  Product.deleteOne({ _id: req.params.id })
+  .then((data) => {
+    if (data.deletedCount === 0) next(new Error("product not found"));
+    else res.status(200).json({ data: "deleted" });
+  })
+  .catch((error) => {
+    next(error);
+  });
+
+}

@@ -6,6 +6,9 @@ const cors = require("cors");
 require("dotenv").config();
 const path = require("path");
 const cookieParser = require("cookie-parser");
+//multer MW
+const myMulter=require("./MW/imagesMW")
+//routes
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
 const loginRoute = require("./routes/loginRoute");
@@ -33,31 +36,7 @@ server.use(
     },
   })
 );
-//images
-const multer = require("multer");
-const upload = multer({
-  limits: {
-    fileSize: 1000000000,
-  },
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-      return cb(new Error("Please upload an image of type jpg, jpeg or png"));
-    } else if (req.files.length > 7) {
-      return cb(new Error("maximum 7 photos can be uplouded"));
-    } else {
-      cb(undefined, true);
-    }
-  },
-  storage: multer.diskStorage({
-    destination: (req, file, callback) => {
-      callback(null, "./products");
-    },
-    filename: function (req, file, callback) {
-      const newImageName = `${Date.now()}-${file.originalname}`;
-      callback(null, newImageName);
-    },
-  }),
-});
+
 // cors
 server.use(cors({}));
 server.use(cookieParser());
@@ -66,7 +45,7 @@ server.use(cookieParser());
 server.use([
   express.json(),
   express.urlencoded({ extended: false }),
-  upload.array("images"),
+ myMulter.upload.array("images"),
 ]);
 
 server.use([
