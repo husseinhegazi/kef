@@ -1,5 +1,6 @@
 const ProductInfo = require("../models/productInfoSchema");
 const Product = require("../models/productsSchema");
+const fs = require("fs");
 
 //find all product info
 module.exports.getAllProductInfo = (req, res, next) => {
@@ -110,30 +111,60 @@ module.exports.updateProductInfoById = (req, res, next) => {
     });
 };
 
-//delete product info by id 
-module.exports.deleteProductInfoById=(req, res, next)=>{
-  ProductInfo.deleteOne({ _id: req.params.id })
-  .then((data) => {
-    if (data.deletedCount === 0) next(new Error("product info not found"));
-    else res.status(200).json({ data: "deleted" });
-  })
-  .catch((error) => {
-    next(error);
-  });
-
-}
+//delete product info by id
+module.exports.deleteProductInfoById = (req, res, next) => {
+  ProductInfo.findOne({ _id: req.params.id })
+    .then((productInfo) => {
+      if (productInfo) {
+        Product.updateOne(
+          { _id: productInfo.productId },
+          { $pull: { productInfoId: { $eq: req.params.id } } }
+        )
+          .then((data) => {
+            if (data.modifiedCount === 0)
+              next(new Error("product info not found"));
+            else {
+              ProductInfo.deleteOne({ _id: req.params.id })
+                .then((data) => {
+                  if (data.deletedCount === 0)
+                    next(new Error("product info not found"));
+                  else {
+                    res.status(200).json({ data: "deleted" });
+                  }
+                })
+                .catch((error) => {
+                  next(error);
+                });
+            }
+          })
+          .catch((error) => {
+            next(error);
+          });
+      }else{next(new Error("product info not found"))}
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
 
 //delete image from product info
-module.exports.deleteImage=(req, res, next)=>{
-  ProductInfo.deleteOne(
+module.exports.deleteImage = (req, res, next) => {
+  let path = req.body.images.split("products")[1];
+  console.log("path>>", path);
+  ProductInfo.updateOne(
     { _id: req.params.id },
-    { $pull: { images: { $eq: req.body.images } }})
-  .then((data) => {
-    if (data.deletedCount === 0) next(new Error("product not found"));
-    else res.status(200).json({ data: "deleted" });
-  })
-  .catch((error) => {
-    next(error);
-  });
-
-}
+    { $pull: { images: { $eq: req.body.images } } }
+  )
+    .then((data) => {
+      if (data.modifiedCount === 0) next(new Error("product not found"));
+      else {
+        fs.unlink("./products/" + path, (error) => {
+          if (error) next(error);
+          res.status(200).json({ data: "image deleted" });
+        });
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
