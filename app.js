@@ -15,6 +15,7 @@ const loginRoute = require("./routes/loginRoute");
 const resetPassword = require("./routes/resetPassword");
 const product = require("./routes/productRoute");
 const productInfo = require("./routes/productInfoRoutes");
+const order = require("./routes/orderRoute");
 
 // DB connect
 mongoose
@@ -55,6 +56,7 @@ server.use([
   resetPassword,
   product,
   productInfo,
+  order
 ]);
 
 server.use("/products", express.static(path.join(__dirname, "products")));

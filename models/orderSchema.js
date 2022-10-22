@@ -1,6 +1,16 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
+//address schema:
+const productSizeSchema = new mongoose.Schema({
+  productInfoId: { type: Number, ref: "productInfo", required: true },
+  size: {
+    type: String,
+    enum: ["medium", "large", "xlarge"],
+    required: true,
+  },
+});
+
 const orderSchema = new mongoose.Schema({
   _id: { type: Number },
   user: { type: Number, required: true },
@@ -20,8 +30,7 @@ const orderSchema = new mongoose.Schema({
   apartment: { type: String },
   notes: { type: String },
   products: [{ type: Number, ref: "products", required: true }],
-  productInfo: { type: Number, ref: "productInfo", required: true },
-  size: { type: String, enum: ["medium", "large", "xlarge"], required: true },
+  productInfo: [{ type: productSizeSchema, _id: false }],
   totalPrice: { type: Number, required: true },
 });
 orderSchema.plugin(AutoIncrement, { id: "orderCounter" });

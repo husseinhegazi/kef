@@ -2,7 +2,6 @@ const User = require("../models/userSchema");
 const Admin = require("../models/adminSchema");
 const jwt = require("jsonwebtoken");
 const bycrypt = require("bcrypt");
-// const { cookie } = require("express-validator");
 const adminUserName = "kef@kef.com";
 const adminPassword = "123456@kK";
 module.exports.login = (req, res, next) => {
