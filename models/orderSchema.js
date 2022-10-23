@@ -32,6 +32,11 @@ const orderSchema = new mongoose.Schema({
   products: [{ type: Number, ref: "products", required: true }],
   productInfo: [{ type: productSizeSchema, _id: false }],
   totalPrice: { type: Number, required: true },
+  orderStatus: {
+    type: String,
+    enum: ["pending", "rejected", "accepted", "on the way", "delivered"],
+    default: "pending",
+  },
 });
 orderSchema.plugin(AutoIncrement, { id: "orderCounter" });
 
