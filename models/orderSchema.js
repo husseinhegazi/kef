@@ -9,35 +9,40 @@ const productSizeSchema = new mongoose.Schema({
     enum: ["medium", "large", "xlarge"],
     required: true,
   },
+  price: { type: Number, required: true },
 });
 
-const orderSchema = new mongoose.Schema({
-  _id: { type: Number },
-  user: { type: Number, required: true },
-  city: {
-    type: String,
-    required: true,
+const orderSchema = new mongoose.Schema(
+  {
+    _id: { type: Number },
+    user: { type: Number, required: true },
+    city: {
+      type: String,
+      required: true,
+    },
+    street: {
+      type: String,
+      required: true,
+    },
+    buildingNumber: {
+      type: String,
+      required: true,
+    },
+    floor: { type: Number, required: true },
+    apartment: { type: String },
+    notes: { type: String },
+    products: [{ type: Number, ref: "products", required: true }],
+    productInfo: [{ type: productSizeSchema, _id: false }],
+    totalPrice: { type: Number, required: true },
+    orderStatus: {
+      type: String,
+      enum: ["pending", "rejected", "accepted", "on the way", "delivered"],
+      default: "pending",
+    },
+    delivery: { type: Number, default: 50 },
   },
-  street: {
-    type: String,
-    required: true,
-  },
-  buildingNumber: {
-    type: String,
-    required: true,
-  },
-  floor: { type: Number, required: true },
-  apartment: { type: String },
-  notes: { type: String },
-  products: [{ type: Number, ref: "products", required: true }],
-  productInfo: [{ type: productSizeSchema, _id: false }],
-  totalPrice: { type: Number, required: true },
-  orderStatus: {
-    type: String,
-    enum: ["pending", "rejected", "accepted", "on the way", "delivered"],
-    default: "pending",
-  },
-});
+  { timestamps: true }
+);
 orderSchema.plugin(AutoIncrement, { id: "orderCounter" });
 
 module.exports = mongoose.model("order", orderSchema);

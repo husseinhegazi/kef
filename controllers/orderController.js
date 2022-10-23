@@ -1,9 +1,10 @@
 const Order = require("../models/orderSchema");
 const ProductInfo = require("../models/productInfoSchema");
+const Product = require("../models/productsSchema");
 
 //get all orders
 module.exports.getAllOrders = (req, res, next) => {
-  Order.find([])
+  Order.find()
     .then((Order) => {
       res.status(200).json(Order);
     })
@@ -13,7 +14,7 @@ module.exports.getAllOrders = (req, res, next) => {
 };
 //get order by id
 (module.exports.getOrderById = (req, res, next) => {
-  Order.find({ _id: req.params.id })
+  Order.findOne({ _id: req.params.id })
     .then((Order) => {
       if (Order) {
         res.status(200).json(Order);
@@ -27,6 +28,12 @@ module.exports.getAllOrders = (req, res, next) => {
 }),
   //add new order
   (module.exports.addOrder = (req, res, next) => {
+    let productInfoArr = req.body.productInfo;
+    let prices = 50;
+    for (let i = 0; i < productInfoArr.length; i++) {
+      prices += productInfoArr[i].price;
+      // console.log(req.body.delivery)
+    }
     let OrderObj = new Order({
       user: req.body.user,
       city: req.body.city,
@@ -37,8 +44,9 @@ module.exports.getAllOrders = (req, res, next) => {
       notes: req.body.notes,
       products: req.body.products,
       productInfo: req.body.productInfo,
-      totalPrice: req.body.totalPrice,
+      totalPrice: prices,
       orderStatus: req.body.orderStatus,
+      delivery: req.body.delivery,
     });
 
     OrderObj.save()

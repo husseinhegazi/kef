@@ -10,11 +10,11 @@ const orderController = require("../controllers/orderController");
 
 router.route("/order")
 .post(orderController.addOrder)
-.get();
+.get(orderController.getAllOrders);
 
 router
   .route("/order/:id")
-  .get()
+  .get(orderController.getOrderById)
   .put()
   .delete();
 
