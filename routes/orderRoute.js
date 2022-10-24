@@ -3,19 +3,21 @@ const router = express.Router();
 const mwError = require("../MW/validationMW");
 const orderController = require("../controllers/orderController");
 // const authMW = require("../MW/authMW");
-// const {
-//   addAdminValidation,
-//   updateAdminValidation,
-// } = require("../validations/adminValidation");
+const {
+  addOrderValidation,
+  updateOrderById,
+  deleteOrderValidation,
+} = require("../validations/orderValidation");
 
-router.route("/order")
-.post(orderController.addOrder)
-.get(orderController.getAllOrders);
+router
+  .route("/order")
+  .get(orderController.getAllOrders)
+  .post(addOrderValidation, mwError, orderController.addOrder);
 
 router
   .route("/order/:id")
   .get(orderController.getOrderById)
-  .put()
-  .delete();
+  .put(updateOrderById, mwError, orderController.updateOrderById)
+  .delete(deleteOrderValidation, mwError, orderController.deleteOrderById);
 
 module.exports = router;

@@ -75,5 +75,39 @@ module.exports.getAllOrders = (req, res, next) => {
   });
 
 //update order
-
+module.exports.updateOrderById = (req, res, next) => {
+  Order.updateOne(
+    { _id: req.params.id },
+    {
+      $set: {
+        city: req.body.city,
+        street: req.body.street,
+        buildingNumber: req.body.buildingNumber,
+        floor: req.body.floor,
+        apartment: req.body.apartment,
+        notes: req.body.notes,
+        orderStatus: req.body.orderStatus,
+        delivery: req.body.delivery,
+      },
+    }
+  )
+    .then((data) => {
+      if (data.modifiedCount == 0) {
+        next(new Error("nothing to update in Order or order not found"));
+      } else res.status(200).json({ data });
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
 //delete order
+module.exports.deleteOrderById = (req, res, next) => {
+  Order.deleteOne({ _id: req.params.id })
+    .then((data) => {
+      if (data.deletedCount === 0) next(new Error("order not found"));
+      else res.status(200).json({ data: "Order deleted" });
+    })
+    .catch((error) => {
+      nect(error);
+    });
+};
