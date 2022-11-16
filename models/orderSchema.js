@@ -29,7 +29,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     floor: { type: Number, required: true },
-    apartment: { type: String },
+    apartment: { type: Number },
     notes: { type: String },
     products: [{ type: Number, ref: "products", required: true }],
     productInfo: [{ type: productSizeSchema, _id: false }],

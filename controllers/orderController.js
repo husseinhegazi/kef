@@ -46,7 +46,6 @@ module.exports.getAllOrders = (req, res, next) => {
       productInfo: req.body.productInfo,
       totalPrice: prices,
       orderStatus: req.body.orderStatus,
-      delivery: req.body.delivery,
     });
 
     OrderObj.save()

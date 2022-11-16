@@ -44,10 +44,21 @@ module.exports.addOrderValidation = [
     .withMessage("productInfo is required")
     .isArray()
     .withMessage("productInfo must be a an array"),
-  //   body("totalPrice")
-  //     .optional()
-  //     .isNumeric()
-  //     .withMessage("totalPrice must be a number"),
+  check("productInfo.*.price")
+    .notEmpty()
+    .withMessage("product price is required")
+    .isNumeric()
+    .withMessage("totalPrice must be a number"),
+  check("productInfo.*.productInfoId")
+    .notEmpty()
+    .withMessage("product productInfoId is required")
+    .isNumeric()
+    .withMessage("productInfoId must be a number"),
+  check("productInfo.*.size")
+    .notEmpty()
+    .withMessage("product size is required")
+    .isString()
+    .withMessage("size must be a string"),
   body("orderStatus")
     .optional()
     .isIn(["pending", "rejected", "accepted", "on the way", "delivered"])

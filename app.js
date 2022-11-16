@@ -7,7 +7,7 @@ require("dotenv").config();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 //multer MW
-const myMulter=require("./MW/imagesMW")
+const myMulter = require("./MW/imagesMW");
 //routes
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
@@ -40,13 +40,19 @@ server.use(
 
 // cors
 server.use(cors({}));
+// app.use(
+//   cors({
+//     origin: "http://localhost:4200",
+//     credentials: true,
+//   })
+// );
 server.use(cookieParser());
 
 //endpoints Routes
 server.use([
   express.json(),
   express.urlencoded({ extended: false }),
- myMulter.upload.array("images"),
+  myMulter.upload.array("images"),
 ]);
 
 server.use([
@@ -56,7 +62,7 @@ server.use([
   resetPassword,
   product,
   productInfo,
-  order
+  order,
 ]);
 
 server.use("/products", express.static(path.join(__dirname, "products")));
