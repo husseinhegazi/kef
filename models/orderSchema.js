@@ -15,7 +15,7 @@ const productSizeSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema(
   {
     _id: { type: Number },
-    user: { type: Number, required: true },
+    user: { type: Number, ref: "users", required: true },
     city: {
       type: String,
       required: true,
