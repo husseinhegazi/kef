@@ -20,4 +20,5 @@ router
   .put(updateOrderById, mwError, orderController.updateOrderById)
   .delete(deleteOrderValidation, mwError, orderController.deleteOrderById);
 
+router.route("/userOrders/:id").get(orderController.getUserOrders);
 module.exports = router;

@@ -1,6 +1,7 @@
 const Order = require("../models/orderSchema");
 const ProductInfo = require("../models/productInfoSchema");
 const Product = require("../models/productsSchema");
+const User = require("../models/userSchema");
 
 //get all orders
 module.exports.getAllOrders = (req, res, next) => {
@@ -51,6 +52,17 @@ module.exports.getAllOrders = (req, res, next) => {
     OrderObj.save()
       .then((order) => {
         let productInfoArr = req.body.productInfo;
+        // to update orders in user schema
+        User.findOneAndUpdate(
+          { _id: req.body.user },
+          { $set: { user: req.body.user }, $push: { orders: order._id } },
+          { new: true },
+          function (err, user) {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
         for (let i = 0; i < productInfoArr.length; i++) {
           ProductInfo.updateOne(
             { _id: req.body.productInfo[i].productInfoId },
@@ -108,5 +120,35 @@ module.exports.deleteOrderById = (req, res, next) => {
     })
     .catch((error) => {
       nect(error);
+    });
+};
+// get user order
+module.exports.getUserOrders = (req, res, next) => {
+  Order.find({
+    user: req.params.id,
+  })
+    .select({
+      user: 0,
+      city: 0,
+      street: 0,
+      buildingNumber: 0,
+      floor: 0,
+      apartment: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      delivery: 0,
+    })
+    .populate({
+      path: "products",
+      select: {
+        _id: 0,
+        name: 1,
+      },
+    })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      next(error);
     });
 };
